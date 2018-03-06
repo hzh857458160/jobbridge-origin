@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="collectTagMapper">
+    <resultMap type="com.jobBridge.model.CollectTag" id="findCollectTagMap">
+        <result column="tag_id" property="tagId"/>
+        <result column="student_id" property="studentId"/>
+    </resultMap>
+    <!-- 数据库操作 -->
+    <!--Table collect_tag-->
+    <!-- 学生在查找TA的所有收藏的标签  返回List<CollectTag>-->
+    <select id="findCollectTagByStudentId" parameterType="Long" resultMap="findCollectTagMap">
+        select * from collect_tag where student_id = #{studentId}
+    </select>
+
+    <!-- 学生新增对某标签的收藏 -->
+    <insert id="addCollectTag" parameterType="com.jobBridge.model.CollectTag">
+        insert into collect_tag(student_id, tag_id)
+        values(#{studentId}, #{tagId})
+    </insert>
+    <!-- 通过学生id删除所有收藏 -->
+    <delete id="deleteCollectTagByStudentId" parameterType="Long">
+        delete from collect_tag where student_id = #{studentId}
+    </delete>
+    <!--通过学生id与标签id来唯一标识且删除该收藏  传入Map<studentId ,tag_id> -->
+    <delete id="deleteCollectTagById" parameterType="java.util.Map">
+        delete from collect_tag where student_id = #{studentId} and tag_id = #{tagId}
+    </delete>
+
+
+</mapper>

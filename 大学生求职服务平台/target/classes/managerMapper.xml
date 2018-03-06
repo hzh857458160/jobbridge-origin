@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="managerMapper">
+    <!-- 数据库操作 -->
+    <select id="findManagerById" parameterType="Integer" resultType="com.jobBridge.model.Manager">
+        select * from manager where manager_id = #{managerId}
+    </select>
+
+    <select id="findManagerByUserName" parameterType="String" resultType="com.jobBridge.model.Manager">
+        select * from manager where user_name = #{userName}
+    </select>
+
+    <!-- order SelectKey需要注意order属性，
+        像MySQL一类支持自动增长类型的数据库中，
+        order需要设置为after才会取到正确的值。
+        像Oracle这样取序列的情况，需要设置为before，否则会报错.
+    -->
+    <insert id="addManager" parameterType="com.jobBridge.model.Manager">
+        <selectKey keyProperty="managerId" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into manager(user_name, password) values(#{userName}, #{password})
+    </insert>
+
+
+</mapper>

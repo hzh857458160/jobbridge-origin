@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studentDetailMapper">
+    <!-- 通过学生id号查找学生详细信息 -->
+    <select id="findStudentDetailByStudentId" parameterType="Long" resultType="com.jobBridge.model.StudentDetail">
+        select * from student_detail where student_id = #{studentId}
+    </select>
+    <!-- 添加学生详细信息 -->
+    <insert id="addStudentDetail" parameterType="com.jobBridge.model.Student">
+        insert into student_detail(student_id,student_mailbox, phone_num, university_name, major, grade, intention_city, intention_industry, intention_function, validation)
+          values(#{studentId}, #{studentMailbox}, #{phoneNum}, #{universityName}, #{major}, #{grade}, #{intentionCity},#{intentionIndustry},#{intentionFunction}, #{validation})
+    </insert>
+    <!-- 通过学生号删除学生详细信息 -->
+    <delete id="deleteStudentDetailByStudentId" parameterType="Long">
+        delete from student_detail where student_id = #{studentId}
+    </delete>
+
+    <update id="updateStudentDetailValidationByStudentId" parameterType="Long">
+        update student_detail SET validation = 1  where student_id = #{studentId}
+    </update>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resumeMapper">
+    <resultMap id="findResumeMap" type="com.jobBridge.model.Resume">
+        <result column="resume_id" property="resumeId"/>
+        <result column="student_id" property="studentId"/>
+    </resultMap>
+    <!-- 通过学生id号查找简历id号 -->
+    <select id="findResumeIdByStudentId" parameterType="Long" resultType="Long">
+        select resume_id from resume where student_id = #{studentId}
+    </select>
+    <!-- 通过简历ID查找resume对象-->
+    <select id="findResumeByResumeId" parameterType="Long" resultMap="findResumeMap">
+    SELECT * from resume where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历 -->
+    <insert id="addResume" parameterType="com.jobBridge.model.Resume">
+        insert into resume(resume_id, student_id)
+        values(#{resumeId}, #{studentId})
+    </insert>
+</mapper>

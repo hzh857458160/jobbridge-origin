@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="informInterviewMapper">
+    <!-- 数据库操作 -->
+    <!--Table inform_interview -->
+    <select id="findInterviewById" parameterType="Long" resultType="com.jobBridge.model.InformInterview">
+        select * from inform_interview where interview_id = #{interviewId}
+    </select>
+
+    <!-- 公司在查找所有发过的面试通知   返回List<InformInterview>-->
+    <select id="findInterviewsByEnterpriseId" parameterType="Long" resultType="com.jobBridge.model.InformInterview">
+        SELECT * from inform_interview where enterprise_id = #{enterpriseId}
+    </select>
+
+    <!-- 学生在查找所有接受到的面试通知  返回List<InformInterview>-->
+    <select id="findInterviewsByStudentId" parameterType="Long" resultType="com.jobBridge.model.InformInterview">
+        SELECT * from inform_interview where student_id = #{studentId}
+    </select>
+
+    <!-- 新增通知 -->
+    <insert id="addInterview" parameterType="com.jobBridge.model.InformInterview">
+        <selectKey keyProperty="informInterviewId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into inform_interview(enterprise_id, student_id, content, date_time)
+        values(#{enterpriseId}, #{studentId},#{content},#{dateTime})
+    </insert>
+
+    <!--删除通知-->
+    <delete id="deleteInterviewById" parameterType="Long">
+        delete from inform_interview where inform_interview_id = #{informInterviewId};
+    </delete>
+
+</mapper>

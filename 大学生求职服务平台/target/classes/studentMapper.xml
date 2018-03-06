@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studentMapper">
+    <!-- 数据库操作 -->
+    <select id="findStudentByUserName" parameterType="String" resultType="com.jobBridge.model.Student">
+        select * from student where user_name = #{userName}
+    </select>
+
+    <select id="findStudentByStudentId" parameterType="Long" resultType="com.jobBridge.model.Student">
+    SELECT * from student where student_id = #{studentId}
+    </select>
+
+
+    <select id="findStudentByMailbox" parameterType="String" resultType="com.jobBridge.model.Student">
+        select * from student where mailbox = #{mailbox}
+    </select>
+
+    <insert id="addStudent" parameterType="com.jobBridge.model.Student">
+        <selectKey keyProperty="studentId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into student(user_name, mailbox, password) values(#{userName}, #{mailbox}, #{password})
+    </insert>
+</mapper>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resumeDetailMapper">
+    <!--*********************** 简历头 *************************-->
+
+    <!-- 通过简历id查找简历头 -->
+    <select id="findResumeHeadByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeHead">
+        select * from resume_head where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历头 -->
+    <insert id="addResumeHead" parameterType="com.jobBridge.model.ResumeHead">
+        insert into resume_head(resume_id, name, address, phone_num, mailbox)
+        values(#{resumeId}, #{name}, #{address}, #{phoneNum}, #{mailbox})
+    </insert>
+
+    <!-- 根据简历号删除简历头 -->
+    <delete id="deleteResumeHeadByResumeId" parameterType="Long">
+        delete from resume_head where resume_id = #{resumeId}
+    </delete>
+
+
+    <!--*********************** 简历 教育背景 ***********************-->
+    <!-- 通过简历号查询简历教育背景 -->
+    <select id="findResumeEducationByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeEducation">
+        <!--select * from resume_education where resume_id = #{resumeId}-->
+        select
+        resume_education_id as resumeEducationId,
+        resume_id as resumeId,
+        university_name as universityName,
+        city as city,
+        province as province,
+        major as major,
+        graduate_date as graduateDate,
+        grade as grade,
+        honors as honors,
+        related_course as relatedCourse
+        from resume_education
+        where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历教育背景 -->
+    <insert id="addResumeEducation" parameterType="com.jobBridge.model.ResumeEducation">
+        <selectKey keyProperty="resumeEducationId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into resume_education(resume_id, university_name, city, province, major, graduate_date, grade, honors, related_course)
+        values(#{resumeId}, #{universityName}, #{city}, #{province}, #{major}, #{graduateDate}, #{grade}, #{honors}, #{relatedCourse})
+    </insert>
+
+    <!-- 根据简历号删除简历教育背景 -->
+    <delete id="deleteResumeEducationByResumeId" parameterType="Long">
+        delete from resume_education where resume_id = #{resumeId}
+    </delete>
+
+    <!--*********************** 简历 工作经历 ***********************-->
+
+    <!-- 通过简历号查询简历工作经历 -->
+    <select id="findResumeWorksByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeWorks">
+        <!--select * from resume_works where resume_id = #{resumeId}-->
+        select
+        resume_works_id as resumeWorksId,
+        resume_id as resumeId,
+        company as company,
+        city as city,
+        province as province,
+        job_name as jobName,
+        project_name as projectName,
+        start_date as startDate,
+        end_date as endDate,
+        sentence_1 as sentence1,
+        sentence_2 as sentence2,
+        sentence_3 as sentence3,
+        sentence_4 as sentence4
+        from resume_works
+        where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历工作经历 -->
+    <insert id="addResumeWorks" parameterType="com.jobBridge.model.ResumeWorks">
+        <selectKey keyProperty="resumeWorksId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into resume_works(resume_id, company, city, province, job_name, project_name, start_date, end_date, sentence_1, sentence_2, sentence_3, sentence_4)
+        values(#{resumeId}, #{company}, #{city}, #{province}, #{jobName}, #{projectName}, #{startDate}, #{endDate}, #{sentence1}, #{sentence2}, #{sentence3}, #{sentence4})
+    </insert>
+
+    <!-- 根据简历号删除简历工作经历 -->
+    <delete id="deleteResumeWorksByResumeId" parameterType="Long">
+        delete from resume_works where resume_id = #{resumeId}
+    </delete>
+
+    <!--*********************** 简历 领导经验 学生社团 ***********************-->
+
+    <!-- 通过简历号查询简历学生社团 -->
+    <select id="findResumeOrganizationByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeOrganization">
+        <!--select * from resume_organization where resume_id = #{resumeId}-->
+        select
+        resume_organization_id as resumeOrganizationId,
+        resume_id as resumeId,
+        name as name,
+        job_name as jobName,
+        start_date as startDate,
+        end_date as endDate,
+        sentence_1 as sentence1,
+        sentence_2 as sentence2,
+        sentence_3 as sentence3
+        from resume_organization
+        where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历学生社团 -->
+    <insert id="addResumeOrganization" parameterType="com.jobBridge.model.ResumeOrganization">
+        <selectKey keyProperty="resumeOrganizationId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into resume_organization(resume_id, name, job_name, start_date, end_date, sentence_1, sentence_2, sentence_3)
+        values(#{resumeId}, #{name}, #{jobName}, #{startDate}, #{endDate}, #{sentence1}, #{sentence2}, #{sentence3})
+    </insert>
+
+    <!-- 根据简历号删除简历学生社团 -->
+    <delete id="deleteResumeOrganizationByResumeId" parameterType="Long">
+        delete from resume_organization where resume_id = #{resumeId}
+    </delete>
+
+    <!--*********************** 简历 领导经验 学生俱乐部 ***********************-->
+
+    <!-- 通过简历号查询简历学生俱乐部 -->
+    <select id="findResumeClubByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeClub">
+        <!--select * from resume_club where resume_id = #{resumeId}-->
+        select
+        resume_club_id as resumeClubId,
+        resume_id as resumeId,
+        name as name,
+        job_name as jobName,
+        start_date as startDate,
+        end_date as endDate,
+        sentence_1 as sentence1,
+        sentence_2 as sentence2
+        from resume_club
+        where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历学生俱乐部 -->
+    <insert id="addResumeClub" parameterType="com.jobBridge.model.ResumeClub">
+        <selectKey keyProperty="resumeClubId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into resume_club(resume_id, name, job_name, start_date, end_date, sentence_1, sentence_2)
+        values(#{resumeId}, #{name}, #{jobName}, #{startDate}, #{endDate}, #{sentence1}, #{sentence2})
+    </insert>
+
+    <!-- 根据简历号删除简历学生俱乐部 -->
+    <delete id="deleteResumeClubByResumeId" parameterType="Long">
+        delete from resume_club where resume_id = #{resumeId}
+    </delete>
+
+
+
+    <!--*********************** 简历 技能兴趣 ***********************-->
+
+    <!-- 通过简历号查询简历技能兴趣 -->
+    <select id="findResumeSkillByResumeId" parameterType="Long" resultType="com.jobBridge.model.ResumeSkill">
+        select * from resume_skill where resume_id = #{resumeId}
+    </select>
+
+    <!-- 添加简历技能兴趣 -->
+    <insert id="addResumeSkill" parameterType="com.jobBridge.model.ResumeSkill">
+        <selectKey keyProperty="resumeSkillId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into resume_skill(resume_id, language, computer, hobby)
+        values(#{resumeId}, #{language}, #{computer}, #{hobby})
+    </insert>
+
+    <!-- 根据简历号删除简历技能兴趣 -->
+    <delete id="deleteResumeSkillByResumeId" parameterType="Long">
+        delete from resume_skill where resume_id = #{resumeId}
+    </delete>
+</mapper>

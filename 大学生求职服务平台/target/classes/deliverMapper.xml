@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deliverMapper">
+    <resultMap type="com.jobBridge.model.Deliver" id="findDeliverMap">
+        <result column="deliver_id" property="deliverId"/>
+        <result column="resume_id" property="resumeId"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+        <result column="recruit_info_id" property="recruitInfoId"/>
+        <result column="date_time" property="dateTime"/>
+        <result column="have_read" property="haveRead"/>
+    </resultMap>
+    <!-- table deliver-->
+    <!-- 通过简历ID、投递的公司ID、来找到该投递的信息  Lisr<Deliver>-->
+    <select id="findDeliverByResumeIdAndEnterpriseId" parameterType="java.util.Map" resultMap="findDeliverMap">
+        SELECT * FROM deliver WHERE resume_id = #{resumeId} and enterprise_id = #{enterpriseId}
+    </select>
+    <!-- 公司查看所有收到的投递信息 returnType为List<Deliver>-->
+    <select id="findDeliverByEnterpriseId" parameterType="Long" resultMap="findDeliverMap">
+        SELECT * FROM deliver WHERE enterprise_id = #{enterpriseId}
+    </select>
+    <!-- 根据简历号查询投递信息 -->
+    <select id="findDeliverByResumeId" parameterType="Long" resultMap="findDeliverMap">
+        select * from deliver where resume_id = #{resumeId}
+    </select>
+    <!-- 根据投递号查询投递信息 -->
+    <select id="findDeliverById" parameterType="Long" resultMap="findDeliverMap">
+        select * from deliver where deliver_id = #{deliverId}
+    </select>
+    <!-- 根据投递号修改投递字段 -->
+    <update id="updateHaveDeleteByDeliverId" parameterType="Long">
+        update deliver set have_delete = true where deliver_id = #{deliverId}
+    </update>
+    <!-- 新建投递-->
+    <insert id="addDeliver" parameterType="com.jobBridge.model.Deliver" >
+        <selectKey keyProperty="deliverId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into deliver(deliver_id, resume_id, enterprise_id, recruit_info_id, date_time, have_read, have_delete)
+        values(#{deliverId}, #{resumeId}, #{enterpriseId}, #{recruitInfoId},#{dateTime},#{haveRead}, #{haveDelete})
+    </insert>
+
+</mapper>

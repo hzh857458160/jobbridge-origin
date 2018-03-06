@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recruitInfoTagMapper">
+    <resultMap id="findRecruitInfoTagMap" type="com.jobBridge.model.RecruitInfoTag">
+        <result column="recruit_info_id" property="recruitInfoId"/>
+        <result column="tag_id" property="tagId"/>
+    </resultMap>
+    <!-- 根据招聘信息号查询所有关联 -->
+    <select id="findRecruitInfoTagByRecruitInfoId" parameterType="Long" resultMap="findRecruitInfoTagMap">
+        select * from recruit_info_tag where recruit_info_id = #{recruitInfoId}
+    </select>
+    <!-- 根据标签号查找所有关联 -->
+    <select id="findRecruitInfoTagByTagId" parameterType="Integer" resultMap="findRecruitInfoTagMap">
+        select * from recruit_info_tag where tag_id = #{tagId}
+    </select>
+    <!-- 添加招聘信息标签 -->
+    <insert id="addRecruitInfoTag" parameterType="com.jobBridge.model.RecruitInfoTag">
+        insert into recruit_info_tag(recruit_info_id, tag_id)
+          values(#{recruitInfoId}, #{tagId});
+    </insert>
+    <!-- 根据招聘信息号删除所有关联 -->
+    <delete id="deleteRecruitInfoTagByRecruitInfoId" parameterType="Long">
+        delete from recruit_info_tag where recruit_info_id = #{recruitInfoId}
+    </delete>
+</mapper>

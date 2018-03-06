@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recruitInfoMapper">
+    <!--<parameterMap id="modifyMap" type="java.util.Map">
+        <parameter property="jobName" mode="IN" jdbcType="String"/>
+        <parameter property="jobDescribe" mode="IN" jdbcType="String"/>
+        <parameter property="jobRequire" mode="IN" jdbcType="String"/>
+        <parameter property="location" mode="IN" jdbcType="String"/>
+        <parameter property="lowSalary" mode="IN" jdbcType="Integer"/>
+        <parameter property="highSalary" mode="IN" jdbcType="Integer"/>
+        <parameter property="deadline" mode="IN" jdbcType="String"/>
+        <parameter property="recruitInfoId" mode="OUT" jdbcType="Long"/>
+    </parameterMap>-->
+    <!-- 通过招聘信息id号查找招聘信息 -->
+    <select id="findRecruitInfoById" parameterType="Long" resultType="com.jobBridge.model.RecruitInfo">
+        select * from recruit_info where recruit_info_id = #{recruitInfoId}
+    </select>
+    <!-- 通过公司号查询所有招聘信息 -->
+    <select id="findRecruitInfoByEnterpriseId" parameterType="Long" resultType="com.jobBridge.model.RecruitInfo">
+        select * from recruit_info where enterprise_id = #{enterpriseId}
+    </select>
+    <!-- 通过公司号查询最新的招聘信息 -->
+    <select id="findLastRecruitInfoByEnterpriseId" parameterType="Long" resultType="com.jobBridge.model.RecruitInfo">
+        select * from recruit_info where enterprise_id = #{enterpriseId} and date_time >= all(
+          select date_time from recruit_info where enterprise_id = #{enterpriseId}
+        )
+    </select>
+    <!-- 修改是否删除字段 -->
+    <update id="updateHaveDeleteById" parameterType="Long">
+        update recruit_info set have_delete = true where recruit_info_id = #{recruitInfoId}
+    </update>
+    <!-- 查询招聘信息数目 -->
+    <select id="findNumOfRecruitInfo" resultType="int">
+        select count(*) from recruit_info;
+    </select>
+    <!-- 按照时间排序查找指定未删除的招聘信息 -->
+    <select id="findRecruitInfoOrderByTime" parameterType="java.util.Map" resultType="com.jobBridge.model.RecruitInfo">
+        select * from recruit_info where have_delete = false order by date_time desc limit #{offset},#{limit}
+    </select>
+    <!-- 根据工作地点查找招聘信息 -->
+    <select id="findRecruitInfoByLocation" parameterType="String" resultType="com.jobBridge.model.RecruitInfo">
+        select * from recruit_info where location = #{location}
+    </select>
+    <!-- 添加招聘信息 -->
+    <insert id="addRecruitInfo" parameterType="com.jobBridge.model.RecruitInfo">
+        <selectKey keyProperty="recruitInfoId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into recruit_info(recruit_info_id, enterprise_id, job_name, job_describe, job_require, location, low_salary, high_salary, date_time, deadline, have_delete)
+        values(#{recruitInfoId}, #{enterpriseId}, #{jobName}, #{jobDescribe}, #{jobRequire}, #{location}, #{lowSalary}, #{highSalary}, #{dateTime}, #{deadline}, #{haveDelete})
+    </insert>
+    <!-- 通过招聘信息号修改整个招聘信息 -->
+    <update id="updateRecruitInfoById" parameterType="java.util.Map">
+        update recruit_info set job_name = #{jobName},job_describe = #{jobDescribe},job_require = #{jobRequire},
+        location = #{location},low_salary = #{lowSalary},high_salary = #{highSalary},deadline = #{deadline}
+        where recruit_info_id = #{recruitInfoId}
+    </update>
+    <!-- 通过招聘信息号删除招聘信息 -->
+    <delete id="deleteRecruitInfoById" parameterType="Long">
+        delete from recruit_info where recruit_info_id = #{recruitInfoId}
+    </delete>
+</mapper>

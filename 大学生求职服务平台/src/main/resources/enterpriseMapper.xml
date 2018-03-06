@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="enterpriseMapper">
+    <!-- 数据库操作 -->
+    <select id="findEnterpriseById" parameterType="Long" resultType="com.jobBridge.model.Enterprise">
+        select * from enterprise where enterprise_id = #{enterpriseId}
+    </select>
+
+    <select id="findEnterpriseByUserName" parameterType="String" resultType="com.jobBridge.model.Enterprise">
+        select * from enterprise where user_name = #{userName}
+    </select>
+
+    <select id="findEnterpriseByMailbox" parameterType="String" resultType="com.jobBridge.model.Enterprise">
+        select * from enterprise where mailbox = #{mailbox}
+    </select>
+    
+    <!--<select id="findEnterpriseBy"-->
+
+    <insert id="addEnterprise" parameterType="com.jobBridge.model.Enterprise">
+        <selectKey keyProperty="enterpriseId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into enterprise(user_name, name, mailbox, phone_num, password, enterprise_introduction, icon_address)
+        values(#{userName}, #{name}, #{mailbox}, #{phoneNum}, #{password}, #{enterpriseIntroduction}, #{iconAddress})
+    </insert>
+</mapper>

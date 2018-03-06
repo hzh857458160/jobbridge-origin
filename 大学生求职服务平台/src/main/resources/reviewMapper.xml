@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviewMapper">
+    <!-- 数据库操作 -->
+    <!--Table review-->
+    <!-- 学生在查找TA的评论 返回List<Review>-->
+    <select id="findReviewByStudentId" parameterType="Long" resultType="com.jobBridge.model.Review">
+        select * from review where student_id = #{studentId}
+    </select>
+    <!-- 公司在查找所有收到的评论   返回List<Review>-->
+    <select id="findReviewByEnterpriseId" parameterType="Long" resultType="com.jobBridge.model.Review">
+        SELECT * from review where enterprise_id = #{enterpriseId}
+    </select>
+    <!-- 学生新增评论 -->
+    <insert id="addReview" parameterType="com.jobBridge.model.Review">
+        insert into review(enterprise_id, student_id, job_name, content, date_time)
+        values(#{enterpriseId}, #{studentId},#{jobName},#{content},#{dateTime})
+    </insert>
+    <!--删除评论  传入Map<studentId ,enterprise_id> -->
+    <delete id="deleteReviewById" parameterType="java.util.Map">
+        delete from review where student_id = #{studentId} and enterprise_id = #{enterpriseId}
+    </delete>
+
+
+</mapper>
